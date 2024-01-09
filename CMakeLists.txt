@@ -19,20 +19,21 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(sensor_msgs REQUIRED)
-find_package(serial REQUIRED)
+find_package(Boost REQUIRED COMPONENTS system thread)
 # uncomment the following section in order to fill in
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
 
-add_executable(camsense_x1_node src/camsense_x1_node.cpp src/camsense_x1.cpp)
+add_executable(camsense_x1_node src/camsense_x1_node.cpp src/camsense_x1.cpp src/serial_comm.cpp)
 target_include_directories(camsense_x1_node PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<BUILD_INTERFACE:${Boost_INCLUDE_DIR}>
   $<INSTALL_INTERFACE:include>)
 
+target_link_libraries(camsense_x1_node  ${Boost_LIBRARIES})
 ament_target_dependencies(camsense_x1_node
   rclcpp
-  sensor_msgs
-  serial)
+  sensor_msgs)
 
 install(TARGETS camsense_x1_node
   EXPORT export_${PROJECT_NAME}

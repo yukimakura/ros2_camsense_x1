@@ -7,7 +7,6 @@
   <maintainer email="root@todo.todo">root</maintainer>
   <license>TODO: License declaration</license>
 
-  <depend>serial</depend>
   <depend>sensor_msgs</depend>
   <depend>rclcpp</depend>
 
