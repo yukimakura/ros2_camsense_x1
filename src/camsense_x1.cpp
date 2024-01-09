@@ -29,6 +29,11 @@ CamsenseX1::CamsenseX1(const std::string &name, rclcpp::NodeOptions const &optio
   try
   {
 
+    RCLCPP_INFO_STREAM(this->get_logger(), "param frame_id_: " << frame_id_);
+    RCLCPP_INFO_STREAM(this->get_logger(), "param port_: " << port_);
+    RCLCPP_INFO_STREAM(this->get_logger(), "param baud_: " << baud_);
+    RCLCPP_INFO_STREAM(this->get_logger(), "param angle_offset_: " << angle_offset_);
+
     scan_pub_ = this->create_publisher<sensor_msgs::msg::LaserScan>("/scan", 10);
     serial_ptr_ = std::make_shared<SerialComm>(port_, baud_);
 
