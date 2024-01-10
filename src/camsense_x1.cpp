@@ -29,6 +29,9 @@ CamsenseX1::CamsenseX1(const std::string &name, rclcpp::NodeOptions const &optio
   try
   {
 
+    RCLCPP_INFO(this->get_logger(), "create_parameter");
+    create_parameter();
+
     RCLCPP_INFO_STREAM(this->get_logger(), "param frame_id_: " << frame_id_);
     RCLCPP_INFO_STREAM(this->get_logger(), "param port_: " << port_);
     RCLCPP_INFO_STREAM(this->get_logger(), "param baud_: " << baud_);
@@ -40,14 +43,10 @@ CamsenseX1::CamsenseX1(const std::string &name, rclcpp::NodeOptions const &optio
     RCLCPP_INFO(this->get_logger(), "%s is open()", port_.c_str());
 
     serial_ptr_->ReadStart([this](unsigned char *rawbytes, std::size_t recv_size)
-                           {
-                             this->parse(rawbytes, recv_size);
-                           });
+                           { this->parse(rawbytes, recv_size); });
     ranges_.resize(400);
     intensities_.resize(400);
 
-    RCLCPP_INFO(this->get_logger(), "create_parameter");
-    create_parameter();
     RCLCPP_INFO(this->get_logger(), "reset_data");
     reset_data();
 
@@ -111,7 +110,6 @@ void CamsenseX1::parse(unsigned char *rawbytes, std::size_t rawbyte_size)
     last_surplus_data_size_ = rawbytes_with_surplus_data_count - processed_data_index;
     std::copy(rawbytes_with_surplus_data + processed_data_index, rawbytes_with_surplus_data + processed_data_index + (rawbytes_with_surplus_data_count - processed_data_index), last_surplus_data_);
   }
-
 }
 
 void CamsenseX1::deserialize_and_publish(unsigned char *one_scan_data)
